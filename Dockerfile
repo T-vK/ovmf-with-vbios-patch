@@ -1,5 +1,4 @@
 FROM ubuntu:bionic
-LABEL maintainer="bitthief@pm.me"
 
 RUN apt-get -qq -y update && \
     apt-get -qq -y upgrade && \
@@ -7,5 +6,6 @@ RUN apt-get -qq -y update && \
 RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7 && \
     update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 && \
     echo 1 | update-alternatives --config gcc
-RUN git clone --recursive https://github.com/tianocore/edk2.git
+RUN git clone --depth 1 --single-branch --branch edk2-stable201905 --recursive https://github.com/tianocore/edk2.git
 COPY files/ /ovmf
+CMD /ovmf/compile-ovmf.sh ${VROM}
