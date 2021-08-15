@@ -1,11 +1,16 @@
-FROM ubuntu:bionic
+FROM debian:buster-20210721-slim
 
 RUN apt-get -qq -y update && \
     apt-get -qq -y upgrade && \
-    apt-get -qq -y install -y wget vim build-essential gcc-5 g++-5 libgcc-5-dev git python2.7 iasl nasm subversion libwww-perl uuid-dev dos2unix
-RUN update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60 --slave /usr/bin/g++ g++ /usr/bin/g++-7 && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 60 --slave /usr/bin/g++ g++ /usr/bin/g++-5 && \
-    echo 1 | update-alternatives --config gcc
-RUN git clone --depth 1 --single-branch --branch edk2-stable201905 --recursive https://github.com/tianocore/edk2.git
+    apt-get -qq -y install -y build-essential python2.7 iasl nasm subversion libwww-perl uuid-dev dos2unix vim git && \
+    git clone --depth 1 --single-branch --branch edk2-stable201905 https://github.com/tianocore/edk2.git && \
+    cd edk2 && \ 
+    git submodule init && \
+    git submodule update --depth 1 CryptoPkg/Library/OpensslLib/openssl && \
+    apt-get remove -y git && \
+    rm -rf /var/lib/apt/lists/* && \
+    rm -rf .git && \
+    rm -rf CryptoPkg/Library/OpensslLib/openssl/.git
+
 COPY files/ /ovmf
 CMD /ovmf/compile-ovmf.sh ${VROM}
