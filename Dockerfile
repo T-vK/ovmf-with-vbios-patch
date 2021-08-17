@@ -8,6 +8,8 @@ RUN apt-get -qq -y update && \
     git submodule init && \
     git submodule update --depth 1 CryptoPkg/Library/OpensslLib/openssl && \
     apt-get remove -y git && \
+    apt-get clean && \
+    apt-get autoremove && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf .git && \
     rm -rf CryptoPkg/Library/OpensslLib/openssl/.git
