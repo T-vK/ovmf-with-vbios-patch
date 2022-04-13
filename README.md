@@ -20,7 +20,7 @@ sudo docker pull tavk/ovmf-vbios-patch:1.0.1-edk2-stable201905
 Patching OVMF 
 
 ``` Bash
-# put your vBIOS ROM in ./rom/ and replace my-vbios.rom in the following command
+# put your vBIOS ROM in ./roms/ and replace my-vbios.rom in the following command
 sudo docker run --rm -ti -v "$(pwd)/build:/build:z" -v "$(pwd)/roms:/roms:z" -e "VROM=my-vbios.rom" tavk/ovmf-vbios-patch:1.0.1-edk2-stable201905
 ```
 
